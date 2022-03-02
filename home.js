@@ -1,5 +1,6 @@
 const http = require('http')
 const port = 5000
+const fs = require('fs')
 
 server = http.createServer((req, res) =>{
     res.writeHead(200,{
@@ -16,7 +17,8 @@ server = http.createServer((req, res) =>{
         res.end()
     
     }else{
-        res.write('<h1>404 not found</h1>')
+        // res.write('<h1>404 not found</h1>')
+        fs.readFile()
         res.end()
     }
 });
