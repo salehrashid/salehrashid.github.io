@@ -2,28 +2,39 @@ const http = require('http')
 const port = 5000
 const fs = require('fs')
 
-server = http.createServer((req, res) =>{
-    res.writeHead(200,{
-        'Content-Type': 'text-html'
+const renderHTML = (path, res) => {
+    fs.readFile(path, (err, data) => {
+        if (err) {
+            res.writeHead(404)
+            res.write("Page Not Found")
+        } else {
+            res.write(data)
+        }
+        res.end();
+    })
+}
+
+server = http.createServer((req, res) => {
+    res.writeHead(200, {
+        'Content-Type': 'text/html'
     })
     const url = req.url
-    console.log(url)
-    if(url === '/home'){
-        res.write('<h1>ini adalah halaman home</h1>')
-        res.end()
-    
-    }else if(url === '/about'){
-        res.write('<h1>ini adalah halaman about</h1>')
-        res.end()
-    
-    }else{
-        // res.write('<h1>404 not found</h1>')
-        fs.readFile()
-        res.write('<h1>404 not found</h1>')
-        res.end()
+    switch (url) {
+        case "/home":
+            renderHTML("./home.html", res)
+            break
+        case "/about":
+            renderHTML("./about.html", res)
+            break
+        case "/services":
+            renderHTML("./services.html", res)
+            break
+        default:
+            renderHTML("./404.html", res)
+            break
     }
 });
 
-server.listen(port, () =>{
+server.listen(port, () => {
     console.log(`server listen on port ${port}`)
 })
